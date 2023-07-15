@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "9419e761-986d-4dd5-abb1-741a464d6ed8",
+		"name": "Team Manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7314697"
+	},
+	"item": [
+		{
+			"name": "Team",
+			"item": [
+				{
+					"name": "GET /teams",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{TEAM_URL}}/teams",
+							"protocol": "https",
+							"host": [
+								"{{TEAM_URL}}"
+							],
+							"path": [
+								"teams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /teams/{TEAM_ID}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{TEAM_URL}}/teams/{{TEAM_ID}}",
+							"protocol": "https",
+							"host": [
+								"{{TEAM_URL}}"
+							],
+							"path": [
+								"teams",
+								"{{TEAM_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "GET /users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{USER_URL}}/users",
+							"protocol": "https",
+							"host": [
+								"{{USER_URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /users/{USER_ID}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{USER_URL}}/users/{{USER_ID}}",
+							"protocol": "https",
+							"host": [
+								"{{USER_URL}}"
+							],
+							"path": [
+								"users",
+								"{{USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "GET /roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{ROLE_URL}}/roles",
+							"protocol": "https",
+							"host": [
+								"{{ROLE_URL}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /roles",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{ROLE_ID}}\",\n    \"description\": \"{{ROLE_DESC}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{ROLE_URL}}/roles",
+							"protocol": "https",
+							"host": [
+								"{{ROLE_URL}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /roles/{ROLE_ID}/associations",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": \"{{USER_ID}}\",\n    \"team_id\": \"{{TEAM_ID}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{ROLE_URL}}/roles/{{ROLE_ID}}/associations",
+							"protocol": "https",
+							"host": [
+								"{{ROLE_URL}}"
+							],
+							"path": [
+								"roles",
+								"{{ROLE_ID}}",
+								"associations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /roles/{ROLE_ID}/associations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{ROLE_URL}}/roles/{{ROLE_ID}}/associations",
+							"protocol": "https",
+							"host": [
+								"{{ROLE_URL}}"
+							],
+							"path": [
+								"roles",
+								"{{ROLE_ID}}",
+								"associations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /users/{ROLE_ID}/associations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{ROLE_URL}}/users/{{USER_ID}}/associations",
+							"protocol": "https",
+							"host": [
+								"{{ROLE_URL}}"
+							],
+							"path": [
+								"users",
+								"{{USER_ID}}",
+								"associations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
