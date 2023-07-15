@@ -1,0 +1,243 @@
+openapi: 3.0.3
+info:
+  title: ms-role
+  contact:
+    email: fernandoftaa@yahoo.com.br
+  version: 1.0.11
+externalDocs:
+  description: Find out more about ms-role
+  url: https://github.com/fernandoteixxeira/roles#roles
+servers:
+  - url: https://localhost:8080/
+tags:
+  - name: roles
+    description: Management of roles
+  - name: role-associations
+    description: Management of role associations with team members
+paths:
+  /v1/roles:
+    get:
+      tags:
+        - roles
+      summary: Get roles
+      description: Get a list of existing roles
+      operationId: getRoles
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespListOfRoles'
+    post:
+      tags:
+        - roles
+      summary: Add a new role
+      description: Add a new role
+      operationId: addRole
+      requestBody:
+        description: Create a new role
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqRole'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespRole'
+        '400':
+          description: Invalid input
+        '409':
+          description: Duplicated input
+  /v1/teams/{team_id}/users/{user_id}/roles/associations:
+    get:
+      tags:
+        - role-associations
+      summary: Finds role associations
+      description: Finds role associations by team id and user id
+      operationId: getRoleAssociationsByTeamIdAndUserId
+      parameters:
+        - name: team_id
+          in: path
+          description: Team id
+          required: true
+          schema:
+            type: string
+        - name: user_id
+          in: path
+          description: User id
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespLisOfRoleAssociation'
+        '400':
+          description: Invalid input
+        '404':
+          description: Role association not found
+  /v1/roles/{role_id}/associations:
+    get:
+      tags:
+        - role-associations
+      summary: Get role associations
+      description: Get role associations by role_id
+      operationId: getRoleAssociationsByRoleId
+      parameters:
+        - name: role_id
+          in: path
+          description: Role id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespLisOfRoleAssociation'
+        '400':
+          description: Invalid input
+    post:
+      tags:
+        - role-associations
+      summary: Add role association
+      description: Add role association by role id
+      operationId: addRoleAssociationsByRoleId
+      requestBody:
+        description: Create a new role association
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqRoleAssociation'
+        required: true
+      parameters:
+        - name: role_id
+          in: path
+          description: Role id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespRoleAssociation'
+        '409':
+          description: Duplicated input
+components:
+  schemas:
+    RespLink:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - PATCH
+            - HEAD
+            - OPTIONS
+        rel:
+          type: string
+          example: self
+        uri:
+          type: string
+          format: uri
+          example: localhost:8080/domain/1/
+    ReqRole:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 50
+          example: SCRUM_MASTER
+        description:
+          type: string
+          maxLength: 200
+          example: Scrum Master
+    RespRole:
+      type: object
+      properties:
+        id:
+          type: string
+          example: SCRUM_MASTER
+        description:
+          type: string
+          example: Scrum Master
+        created_at:
+          type: string
+          format: date-time
+    RespListOfRoles:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/RespRole'
+    ReqRoleAssociation:
+      type: object
+      properties:
+        team_id:
+          type: integer
+          maxLength: 50
+          example: 7676a4bf-adfe-415c-941b-1739af07039b
+        user_id:
+          type: string
+          maxLength: 50
+          example: 371d2ee8-cdf4-48cf-9ddb-04798b79ad9e
+    RespRoleAssociation:
+      type: object
+      properties:
+        team_id:
+          type: integer
+          maxLength: 50
+          example: 7676a4bf-adfe-415c-941b-1739af07039b
+        user_id:
+          type: string
+          maxLength: 50
+          example: 371d2ee8-cdf4-48cf-9ddb-04798b79ad9e
+        role_id:
+          type: string
+          example: SCRUM_MASTER
+        create_at:
+          type: string
+          format: date-time
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/RespLink'
+    RespLisOfRoleAssociation:
+      type: object
+      properties:
+        role_associations:
+          type: array
+          items:
+            $ref: '#/components/schemas/RespRoleAssociation'
+  requestBodies:
+    ReqRole:
+      description: Role object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReqRole'
+    ReqRoleAssociation:
+      description: Role association object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReqRoleAssociation'
