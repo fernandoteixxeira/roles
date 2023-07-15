@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+
+  db:
+    container_name: db
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_DATABASE: roles
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 123
+      MYSQL_ROOT_PASSWORD: 123healthcheck
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 20s
+      retries: 10
+    volumes:
+      - db:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - lan
+
+  app:
+    container_name: app
+    build:
+      context: ..
+    restart: always
+    env_file: .env
+    ports:
+      - "8080:8080"
+    networks:
+      - lan
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db:
+
+networks:
+  lan:
+    driver: bridge
