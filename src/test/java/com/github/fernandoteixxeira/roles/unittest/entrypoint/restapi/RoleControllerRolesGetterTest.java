@@ -1,7 +1,6 @@
 package com.github.fernandoteixxeira.roles.unittest.entrypoint.restapi;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fernandoteixxeira.roles.application.configuration.LanguageConfiguration;
 import com.github.fernandoteixxeira.roles.core.usecase.role.ListOfRoles;
 import com.github.fernandoteixxeira.roles.core.usecase.role.RolesGetterUseCase;
@@ -19,7 +18,7 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static br.com.six2six.fixturefactory.Fixture.from;
-import static br.com.six2six.fixturefactory.loader.FixtureFactoryLoader.loadTemplates;
+import static com.github.fernandoteixxeira.roles.fixture.MainFixture.loadContext;
 import static com.github.fernandoteixxeira.roles.fixture.core.ListOfRolesFixture.Templates.EMPTY;
 import static com.github.fernandoteixxeira.roles.fixture.core.ListOfRolesFixture.Templates.SCRUM_MASTER_AND_PRODUCT_OWNER;
 import static com.github.fernandoteixxeira.roles.fixture.core.RoleFixture.Values.PRODUCT_OWNER_ID;
@@ -44,7 +43,7 @@ public class RoleControllerRolesGetterTest {
 
     @BeforeAll
     static void setup() {
-        loadTemplates("com.github.fernandoteixxeira.roles.fixture");
+        loadContext();
     }
 
     @Test

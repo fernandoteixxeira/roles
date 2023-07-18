@@ -9,6 +9,7 @@ import org.json.JSONObject;
 @RequiredArgsConstructor(staticName = "of")
 public class JSONObjectFromRoleRequestAdapter {
     private final RoleRequest role;
+
     @SneakyThrows
     public JSONObject adapt() {
         val json = new JSONObject();

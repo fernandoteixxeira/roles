@@ -51,8 +51,10 @@ paths:
                 $ref: '#/components/schemas/RespRole'
         '400':
           description: Invalid input
-        '409':
-          description: Duplicated input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /v1/teams/{team_id}/users/{user_id}/roles/associations:
     get:
       tags:
@@ -73,7 +75,6 @@ paths:
           required: true
           schema:
             type: string
-
       responses:
         '200':
           description: successful operation
@@ -83,8 +84,16 @@ paths:
                 $ref: '#/components/schemas/RespLisOfRoleAssociation'
         '400':
           description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
           description: Role association not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /v1/roles/{role_id}/associations:
     get:
       tags:
@@ -108,6 +117,10 @@ paths:
                 $ref: '#/components/schemas/RespLisOfRoleAssociation'
         '400':
           description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - role-associations
@@ -137,6 +150,10 @@ paths:
                 $ref: '#/components/schemas/RespRoleAssociation'
         '409':
           description: Duplicated input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     RespLink:
@@ -228,6 +245,31 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RespRoleAssociation'
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: some fields contain errors
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorItem'
+    ErrorItem:
+      type: object
+      properties:
+        scope:
+          type: string
+          example: attribute
+        field:
+          type: string
+          example: id
+        value:
+          type: string
+          example: abcdefghijklemnopkrstuvwxyzABCDEFGHIJKLEMNOPKRSTUVWXYZ0123456789
+        message:
+          type: string
+          example: size must be between 0 and 50
   requestBodies:
     ReqRole:
       description: Role object

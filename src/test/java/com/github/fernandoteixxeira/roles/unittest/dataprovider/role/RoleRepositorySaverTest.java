@@ -3,7 +3,6 @@ package com.github.fernandoteixxeira.roles.unittest.dataprovider.role;
 import com.github.fernandoteixxeira.roles.dataprovider.orm.RoleORM;
 import com.github.fernandoteixxeira.roles.dataprovider.role.RoleRepository;
 import lombok.val;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 import static br.com.six2six.fixturefactory.Fixture.from;
-import static br.com.six2six.fixturefactory.loader.FixtureFactoryLoader.loadTemplates;
+import static com.github.fernandoteixxeira.roles.fixture.MainFixture.loadContext;
 import static com.github.fernandoteixxeira.roles.fixture.core.RoleFixture.Values.SCRUM_MASTER_ID;
 import static com.github.fernandoteixxeira.roles.fixture.dataprovider.RoleORMFixture.Templates.SCRUM_MASTER;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +30,7 @@ public class RoleRepositorySaverTest {
 
     @BeforeAll
     static void setup() {
-        loadTemplates("com.github.fernandoteixxeira.roles.fixture");
+        loadContext();
     }
 
     @DisplayName("When find all on database then return a list of RoleORM with three or more records")

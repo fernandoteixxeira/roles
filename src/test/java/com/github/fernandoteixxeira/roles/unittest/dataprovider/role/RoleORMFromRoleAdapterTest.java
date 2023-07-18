@@ -2,7 +2,6 @@ package com.github.fernandoteixxeira.roles.unittest.dataprovider.role;
 
 import com.github.fernandoteixxeira.roles.core.usecase.role.Role;
 import com.github.fernandoteixxeira.roles.dataprovider.orm.RoleORM;
-import com.github.fernandoteixxeira.roles.fixture.core.RoleFixture;
 import com.github.fernandoteixxeira.roles.fixture.dataprovider.RoleORMFixture;
 import lombok.val;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,8 +9,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static br.com.six2six.fixturefactory.Fixture.from;
-import static br.com.six2six.fixturefactory.loader.FixtureFactoryLoader.loadTemplates;
 import static com.github.fernandoteixxeira.roles.dataprovider.role.RoleORMFromRoleAdapter.of;
+import static com.github.fernandoteixxeira.roles.fixture.MainFixture.loadContext;
 import static com.github.fernandoteixxeira.roles.fixture.core.RoleFixture.Templates.SCRUM_MASTER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -20,7 +19,7 @@ import static org.junit.Assert.assertThrows;
 public class RoleORMFromRoleAdapterTest {
     @BeforeAll
     static void setup() {
-        loadTemplates("com.github.fernandoteixxeira.roles.fixture");
+        loadContext();
     }
 
     @DisplayName("When Role object is non null then return adapted RoleORM object")

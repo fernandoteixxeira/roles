@@ -9,7 +9,13 @@ import com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleResponseFixture
 
 import java.time.LocalDateTime;
 
+import static br.com.six2six.fixturefactory.loader.FixtureFactoryLoader.loadTemplates;
+
 public class MainFixture implements TemplateLoader {
+
+    public static void loadContext() {
+        loadTemplates("com.github.fernandoteixxeira.roles.fixture");
+    }
 
     @Override
     public void load() {

@@ -17,15 +17,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static br.com.six2six.fixturefactory.Fixture.from;
-import static br.com.six2six.fixturefactory.loader.FixtureFactoryLoader.loadTemplates;
+import static com.github.fernandoteixxeira.roles.fixture.MainFixture.loadContext;
 import static com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleRequestFixture.Templates.SCRUM_MASTER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -52,7 +50,7 @@ public class RoleControllerRoleAdderTest {
 
     @BeforeAll
     static void setup() {
-        loadTemplates("com.github.fernandoteixxeira.roles.fixture");
+        loadContext();
     }
 
     @DisplayName("When create role successfully then return 200")

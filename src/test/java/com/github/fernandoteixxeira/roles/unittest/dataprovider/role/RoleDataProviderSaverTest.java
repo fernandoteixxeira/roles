@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static br.com.six2six.fixturefactory.Fixture.from;
-import static br.com.six2six.fixturefactory.loader.FixtureFactoryLoader.loadTemplates;
+import static com.github.fernandoteixxeira.roles.fixture.MainFixture.loadContext;
 import static com.github.fernandoteixxeira.roles.fixture.dataprovider.RoleORMFixture.Templates.SCRUM_MASTER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,7 +37,7 @@ public class RoleDataProviderSaverTest {
 
     @BeforeAll
     static void setup() {
-        loadTemplates("com.github.fernandoteixxeira.roles.fixture");
+        loadContext();
     }
 
     @DisplayName("When there is a RoleORM saved then return Role")

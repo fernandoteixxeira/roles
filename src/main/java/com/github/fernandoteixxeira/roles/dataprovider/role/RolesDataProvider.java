@@ -1,8 +1,8 @@
 package com.github.fernandoteixxeira.roles.dataprovider.role;
 
 import com.github.fernandoteixxeira.roles.core.usecase.role.Role;
-import com.github.fernandoteixxeira.roles.core.usecase.role.RolesGetter;
 import com.github.fernandoteixxeira.roles.core.usecase.role.RoleSaver;
+import com.github.fernandoteixxeira.roles.core.usecase.role.RolesGetter;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Repository;

@@ -3,16 +3,14 @@ package com.github.fernandoteixxeira.roles.unittest.entrypoint.restapi;
 import com.github.fernandoteixxeira.roles.core.usecase.role.Role;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.role.RoleRequest;
 import com.github.fernandoteixxeira.roles.fixture.core.RoleFixture;
-import com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleRequestFixture;
-import com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleResponseFixture;
 import lombok.val;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static br.com.six2six.fixturefactory.Fixture.from;
-import static br.com.six2six.fixturefactory.loader.FixtureFactoryLoader.loadTemplates;
 import static com.github.fernandoteixxeira.roles.entrypoint.restapi.role.RoleFromRoleRequestAdapter.of;
+import static com.github.fernandoteixxeira.roles.fixture.MainFixture.loadContext;
 import static com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleRequestFixture.Templates.SCRUM_MASTER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -21,7 +19,7 @@ import static org.junit.Assert.assertThrows;
 public class RoleFromRoleRequestAdapterTest {
     @BeforeAll
     static void setup() {
-        loadTemplates("com.github.fernandoteixxeira.roles.fixture");
+        loadContext();
     }
 
     @DisplayName("When RoleRequest object is non null then return adapted Role object")
