@@ -9,13 +9,13 @@ public class RoleAdapter {
 
     private final RoleORM roleORM;
 
+    private RoleAdapter(final RoleORM roleORM) {
+        this.roleORM = roleORM;
+    }
+
     public static RoleAdapter of(final RoleORM roleORM) {
         Objects.requireNonNull(roleORM);
         return new RoleAdapter(roleORM);
-    }
-
-    private RoleAdapter(final RoleORM roleORM) {
-        this.roleORM = roleORM;
     }
 
     public Role adapt() {

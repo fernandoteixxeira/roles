@@ -7,13 +7,13 @@ import java.util.Objects;
 public class RoleResponseAdapter {
     private final Role role;
 
+    private RoleResponseAdapter(final Role role) {
+        this.role = role;
+    }
+
     public static RoleResponseAdapter of(final Role role) {
         Objects.requireNonNull(role);
         return new RoleResponseAdapter(role);
-    }
-
-    private RoleResponseAdapter(final Role role) {
-        this.role = role;
     }
 
     public RoleResponse adapt() {

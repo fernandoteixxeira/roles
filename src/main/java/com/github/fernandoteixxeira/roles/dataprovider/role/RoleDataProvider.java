@@ -12,6 +12,7 @@ import java.util.List;
 public class RoleDataProvider implements RoleGetter {
 
     private final RoleRepository roleRepository;
+
     @Override
     public List<Role> getAll() {
         return roleRepository.findAll().stream()

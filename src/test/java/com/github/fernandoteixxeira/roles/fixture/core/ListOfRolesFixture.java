@@ -13,11 +13,6 @@ import static java.util.Collections.emptyList;
 
 public class ListOfRolesFixture {
 
-    public interface Templates {
-        String EMPTY = "list_of_roles_empty";
-        String SCRUM_MASTER_AND_PRODUCT_OWNER = "list_of_roles_scrum_master_and_product_owner";
-    }
-
     public static void load() {
         loadEmpty();
         loadScrumMasterAndProductOwner();
@@ -33,5 +28,10 @@ public class ListOfRolesFixture {
         of(ListOfRoles.class).addTemplate(SCRUM_MASTER_AND_PRODUCT_OWNER, new Rule() {{
             add("roles", has(2).of(Role.class, SCRUM_MASTER, PRODUCT_OWNER));
         }});
+    }
+
+    public interface Templates {
+        String EMPTY = "list_of_roles_empty";
+        String SCRUM_MASTER_AND_PRODUCT_OWNER = "list_of_roles_scrum_master_and_product_owner";
     }
 }

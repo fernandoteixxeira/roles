@@ -9,11 +9,6 @@ import static com.github.fernandoteixxeira.roles.fixture.dataprovider.RoleORMFix
 import static com.github.fernandoteixxeira.roles.fixture.dataprovider.RoleORMFixture.Templates.SCRUM_MASTER;
 
 public class RoleORMFixture {
-    public interface Templates {
-        String SCRUM_MASTER = "role_orm_scrum_master";
-        String PRODUCT_OWNER = "role_orm_product_owner";
-    }
-
     public static void load() {
         loadScrumMaster();
         loadProductOwner();
@@ -33,5 +28,10 @@ public class RoleORMFixture {
             add("description", "Product Owner");
             add("createdAt", CREATED_AT);
         }});
+    }
+
+    public interface Templates {
+        String SCRUM_MASTER = "role_orm_scrum_master";
+        String PRODUCT_OWNER = "role_orm_product_owner";
     }
 }

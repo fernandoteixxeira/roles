@@ -9,11 +9,6 @@ import static com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleResponse
 import static com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleResponseFixture.Templates.SCRUM_MASTER;
 
 public class RoleResponseFixture {
-    public interface Templates {
-        String SCRUM_MASTER = "role_response_scrum_master";
-        String PRODUCT_OWNER = "role_response_product_owner";
-    }
-
     public static void load() {
         loadScrumMaster();
         loadProductOwner();
@@ -33,5 +28,10 @@ public class RoleResponseFixture {
             add("description", "Product Owner");
             add("createdAt", CREATED_AT);
         }});
+    }
+
+    public interface Templates {
+        String SCRUM_MASTER = "role_response_scrum_master";
+        String PRODUCT_OWNER = "role_response_product_owner";
     }
 }

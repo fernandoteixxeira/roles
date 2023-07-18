@@ -10,15 +10,15 @@ import java.time.LocalDateTime;
 
 public class MainFixture implements TemplateLoader {
 
-    public interface DefaultValues {
-        LocalDateTime CREATED_AT = LocalDateTime.parse("2023-07-01T12:00");
-    }
-
     @Override
     public void load() {
         RoleFixture.load();
         RoleResponseFixture.load();
         ListOfRolesFixture.load();
         RoleORMFixture.load();
+    }
+
+    public interface DefaultValues {
+        LocalDateTime CREATED_AT = LocalDateTime.parse("2023-07-01T12:00");
     }
 }

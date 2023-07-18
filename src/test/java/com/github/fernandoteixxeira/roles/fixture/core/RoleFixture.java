@@ -11,16 +11,6 @@ import static com.github.fernandoteixxeira.roles.fixture.core.RoleFixture.Values
 import static com.github.fernandoteixxeira.roles.fixture.core.RoleFixture.Values.SCRUM_MASTER_ID;
 
 public class RoleFixture {
-    public interface Templates {
-        String SCRUM_MASTER = "role_scrum_master";
-        String PRODUCT_OWNER = "role_product_owner";
-    }
-
-    public interface Values {
-        String SCRUM_MASTER_ID = "SCRUM_MASTER";
-        String PRODUCT_OWNER_ID = "PRODUCT_OWNER";
-    }
-
     public static void load() {
         loadScrumMaster();
         loadProductOwner();
@@ -40,5 +30,15 @@ public class RoleFixture {
             add("description", "Product Owner");
             add("createdAt", CREATED_AT);
         }});
+    }
+
+    public interface Templates {
+        String SCRUM_MASTER = "role_scrum_master";
+        String PRODUCT_OWNER = "role_product_owner";
+    }
+
+    public interface Values {
+        String SCRUM_MASTER_ID = "SCRUM_MASTER";
+        String PRODUCT_OWNER_ID = "PRODUCT_OWNER";
     }
 }
