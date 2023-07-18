@@ -1,19 +1,19 @@
 package com.github.fernandoteixxeira.roles.entrypoint.restapi.role;
 
 import com.github.fernandoteixxeira.roles.core.usecase.role.Role;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
 
-public class RoleResponseAdapter {
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+
+public class RoleResponseFromRoleAdapter {
     private final Role role;
 
-    private RoleResponseAdapter(final Role role) {
-        this.role = role;
-    }
-
-    public static RoleResponseAdapter of(final Role role) {
+    public static RoleResponseFromRoleAdapter of(final Role role) {
         Objects.requireNonNull(role);
-        return new RoleResponseAdapter(role);
+        return new RoleResponseFromRoleAdapter(role);
     }
 
     public RoleResponse adapt() {

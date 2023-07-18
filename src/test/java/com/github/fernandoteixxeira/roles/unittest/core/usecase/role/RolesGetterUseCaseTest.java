@@ -1,7 +1,7 @@
 package com.github.fernandoteixxeira.roles.unittest.core.usecase.role;
 
 import com.github.fernandoteixxeira.roles.core.usecase.role.Role;
-import com.github.fernandoteixxeira.roles.core.usecase.role.RoleGetter;
+import com.github.fernandoteixxeira.roles.core.usecase.role.RolesGetter;
 import com.github.fernandoteixxeira.roles.core.usecase.role.RolesGetterUseCase;
 import lombok.val;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,7 +30,7 @@ public class RolesGetterUseCaseTest {
     @InjectMocks
     RolesGetterUseCase rolesGetterUseCase;
     @Mock
-    RoleGetter roleGetter;
+    RolesGetter rolesGetter;
 
     @BeforeAll
     static void setup() {
@@ -41,7 +41,7 @@ public class RolesGetterUseCaseTest {
     @Test
     void when_list_of_roles_is_non_empty_then_return_a_object_with_them() {
         val listOfRoles = from(Role.class).gimme(2, SCRUM_MASTER, PRODUCT_OWNER);
-        doReturn(listOfRoles).when(roleGetter).getAll();
+        doReturn(listOfRoles).when(rolesGetter).getAll();
 
         val result = rolesGetterUseCase.getAllRoles();
 
@@ -55,7 +55,7 @@ public class RolesGetterUseCaseTest {
     @DisplayName("When list of roles is empty then return a object with no role")
     @Test
     void when_list_of_roles_is_empty_then_return_a_object_with_no_role() {
-        doReturn(emptyList()).when(roleGetter).getAll();
+        doReturn(emptyList()).when(rolesGetter).getAll();
 
         val result = rolesGetterUseCase.getAllRoles();
 

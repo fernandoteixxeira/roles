@@ -4,6 +4,7 @@ import br.com.six2six.fixturefactory.loader.TemplateLoader;
 import com.github.fernandoteixxeira.roles.fixture.core.ListOfRolesFixture;
 import com.github.fernandoteixxeira.roles.fixture.core.RoleFixture;
 import com.github.fernandoteixxeira.roles.fixture.dataprovider.RoleORMFixture;
+import com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleRequestFixture;
 import com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleResponseFixture;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ public class MainFixture implements TemplateLoader {
     @Override
     public void load() {
         RoleFixture.load();
+        RoleRequestFixture.load();
         RoleResponseFixture.load();
         ListOfRolesFixture.load();
         RoleORMFixture.load();

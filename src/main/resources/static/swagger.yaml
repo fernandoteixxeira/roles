@@ -43,8 +43,8 @@ paths:
               $ref: '#/components/schemas/ReqRole'
         required: true
       responses:
-        '200':
-          description: Successful operation
+        '201':
+          description: Successful creation
           content:
             application/json:
               schema:

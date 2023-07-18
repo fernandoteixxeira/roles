@@ -2,7 +2,7 @@ package com.github.fernandoteixxeira.roles.unittest.dataprovider.role;
 
 import com.github.fernandoteixxeira.roles.core.usecase.role.Role;
 import com.github.fernandoteixxeira.roles.dataprovider.orm.RoleORM;
-import com.github.fernandoteixxeira.roles.dataprovider.role.RoleDataProvider;
+import com.github.fernandoteixxeira.roles.dataprovider.role.RolesDataProvider;
 import com.github.fernandoteixxeira.roles.dataprovider.role.RoleRepository;
 import lombok.val;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,11 +23,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
 
-@DisplayName("Unit test for data provider of RoleORM")
+@DisplayName("Unit test for data provider of RoleORM to test All Getter")
 @ExtendWith(MockitoExtension.class)
 public class RoleDataProviderAllGetterTest {
     @InjectMocks
-    RoleDataProvider roleDataProvider;
+    RolesDataProvider roleDataProvider;
     @Mock
     RoleRepository roleRepository;
 

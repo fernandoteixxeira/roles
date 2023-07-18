@@ -8,10 +8,10 @@ import lombok.val;
 @RequiredArgsConstructor
 public class RolesGetterUseCase {
 
-    private final RoleGetter roleGetter;
+    private final RolesGetter rolesGetter;
 
     public ListOfRoles getAllRoles() {
-        val roles = roleGetter.getAll();
+        val roles = rolesGetter.getAll();
         return ListOfRoles.builder()
                 .roles(roles)
                 .build();

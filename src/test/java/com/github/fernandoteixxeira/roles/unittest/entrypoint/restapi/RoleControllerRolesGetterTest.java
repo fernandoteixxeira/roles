@@ -2,11 +2,12 @@ package com.github.fernandoteixxeira.roles.unittest.entrypoint.restapi;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fernandoteixxeira.roles.application.configuration.LanguageConfiguration;
 import com.github.fernandoteixxeira.roles.core.usecase.role.ListOfRoles;
 import com.github.fernandoteixxeira.roles.core.usecase.role.RolesGetterUseCase;
-import com.github.fernandoteixxeira.roles.entrypoint.restapi.role.ListOfRolesResponse;
+import com.github.fernandoteixxeira.roles.core.usecase.role.RolesSaverUseCase;
+import com.github.fernandoteixxeira.roles.entrypoint.restapi.handler.GlobalExceptionHandler;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.role.RoleController;
-import com.github.fernandoteixxeira.roles.entrypoint.restapi.role.RoleResponse;
 import lombok.val;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -21,24 +22,25 @@ import static br.com.six2six.fixturefactory.Fixture.from;
 import static br.com.six2six.fixturefactory.loader.FixtureFactoryLoader.loadTemplates;
 import static com.github.fernandoteixxeira.roles.fixture.core.ListOfRolesFixture.Templates.EMPTY;
 import static com.github.fernandoteixxeira.roles.fixture.core.ListOfRolesFixture.Templates.SCRUM_MASTER_AND_PRODUCT_OWNER;
-import static com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleResponseFixture.Templates.PRODUCT_OWNER;
-import static com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleResponseFixture.Templates.SCRUM_MASTER;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.github.fernandoteixxeira.roles.fixture.core.RoleFixture.Values.PRODUCT_OWNER_ID;
+import static com.github.fernandoteixxeira.roles.fixture.core.RoleFixture.Values.SCRUM_MASTER_ID;
+import static org.hamcrest.Matchers.matchesPattern;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("Unit tests for REST API in route GET /role")
 @WebMvcTest
-@SpringJUnitWebConfig(classes = RoleController.class)
-public class RoleControllerRoleGetterTest {
+@SpringJUnitWebConfig(classes = {RoleController.class, GlobalExceptionHandler.class, LanguageConfiguration.class})
+public class RoleControllerRolesGetterTest {
 
     @Autowired
     MockMvc mockMvc;
     @MockBean
     RolesGetterUseCase rolesGetterUseCase;
-    @Autowired
-    ObjectMapper objectMapper;
+    @MockBean
+    RolesSaverUseCase rolesSaverUseCase;
 
     @BeforeAll
     static void setup() {
@@ -51,16 +53,10 @@ public class RoleControllerRoleGetterTest {
         val listOfRoles = from(ListOfRoles.class).gimme(EMPTY);
         doReturn(listOfRoles).when(rolesGetterUseCase).getAllRoles();
 
-        val mvnResult = mockMvc.perform(get("/v1/roles"))
-                .andExpect(status().isOk()).andReturn();
-        val responseBody = mvnResult.getResponse().getContentAsString();
-        val listOfRolesResponse = objectMapper.readValue(responseBody, ListOfRolesResponse.class);
-
-        assertThat(listOfRolesResponse).isNotNull()
-                .extracting(ListOfRolesResponse::getRoles)
-                .isNotNull()
-                .asList()
-                .isEmpty();
+        mockMvc.perform(get("/v1/roles"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.roles").isEmpty())
+                .andReturn();
     }
 
     @Test
@@ -69,20 +65,12 @@ public class RoleControllerRoleGetterTest {
         val listOfRoles = from(ListOfRoles.class).gimme(SCRUM_MASTER_AND_PRODUCT_OWNER);
         doReturn(listOfRoles).when(rolesGetterUseCase).getAllRoles();
 
-        val mvnResult = mockMvc.perform(get("/v1/roles"))
-                .andExpect(status().isOk()).andReturn();
-        val responseBody = mvnResult.getResponse().getContentAsString();
-        val listOfRolesResponse = objectMapper.readValue(responseBody, ListOfRolesResponse.class);
-
-        val scrumMaster = from(RoleResponse.class).gimme(SCRUM_MASTER);
-        val productOwner = from(RoleResponse.class).gimme(PRODUCT_OWNER);
-        assertThat(listOfRolesResponse).isNotNull()
-                .extracting(ListOfRolesResponse::getRoles)
-                .isNotNull()
-                .asList()
-                .isNotEmpty()
-                .usingRecursiveFieldByFieldElementComparator()
-                .containsExactly(scrumMaster, productOwner);
+        mockMvc.perform(get("/v1/roles"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.roles").isNotEmpty())
+                .andExpect(jsonPath("$.roles[0].id", matchesPattern("^" + SCRUM_MASTER_ID + "|" + PRODUCT_OWNER_ID + "$")))
+                .andExpect(jsonPath("$.roles[1].id", matchesPattern("^" + SCRUM_MASTER_ID + "|" + PRODUCT_OWNER_ID + "$")))
+                .andReturn();
     }
 
 }
