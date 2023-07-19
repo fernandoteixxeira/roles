@@ -94,17 +94,18 @@
 			"name": "Role",
 			"item": [
 				{
-					"name": "GET /roles",
+					"name": "GET /v1/roles",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://{{ROLE_URL}}/roles",
-							"protocol": "https",
+							"raw": "http://{{ROLE_URL}}/v1/roles",
+							"protocol": "http",
 							"host": [
 								"{{ROLE_URL}}"
 							],
 							"path": [
+								"v1",
 								"roles"
 							]
 						}
@@ -112,7 +113,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /roles",
+					"name": "POST /v1/roles",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -126,12 +127,13 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{ROLE_URL}}/roles",
-							"protocol": "https",
+							"raw": "http://{{ROLE_URL}}/v1/roles",
+							"protocol": "http",
 							"host": [
 								"{{ROLE_URL}}"
 							],
 							"path": [
+								"v1",
 								"roles"
 							]
 						}
@@ -139,7 +141,52 @@
 					"response": []
 				},
 				{
-					"name": "POST /roles/{ROLE_ID}/associations",
+					"name": "GET /v1/teams/{TEAM_ID}/users/{USER_ID}/roles/associations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ROLE_URL}}/v1/teams/{{TEAM_ID}}/users/{{USER_ID}}/roles/associations",
+							"protocol": "http",
+							"host": [
+								"{{ROLE_URL}}"
+							],
+							"path": [
+								"v1",
+								"teams",
+								"{{TEAM_ID}}",
+								"users",
+								"{{USER_ID}}",
+								"roles",
+								"associations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /v1/roles/{ROLE_ID}/associations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{ROLE_URL}}/v1/roles/{{ROLE_ID}}/associations",
+							"protocol": "http",
+							"host": [
+								"{{ROLE_URL}}"
+							],
+							"path": [
+								"v1",
+								"roles",
+								"{{ROLE_ID}}",
+								"associations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /v1/roles/{ROLE_ID}/associations",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -153,54 +200,15 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{ROLE_URL}}/roles/{{ROLE_ID}}/associations",
-							"protocol": "https",
+							"raw": "http://{{ROLE_URL}}/v1/roles/{{ROLE_ID}}/associations",
+							"protocol": "http",
 							"host": [
 								"{{ROLE_URL}}"
 							],
 							"path": [
+								"v1",
 								"roles",
 								"{{ROLE_ID}}",
-								"associations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /roles/{ROLE_ID}/associations",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://{{ROLE_URL}}/roles/{{ROLE_ID}}/associations",
-							"protocol": "https",
-							"host": [
-								"{{ROLE_URL}}"
-							],
-							"path": [
-								"roles",
-								"{{ROLE_ID}}",
-								"associations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /users/{ROLE_ID}/associations",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://{{ROLE_URL}}/users/{{USER_ID}}/associations",
-							"protocol": "https",
-							"host": [
-								"{{ROLE_URL}}"
-							],
-							"path": [
-								"users",
-								"{{USER_ID}}",
 								"associations"
 							]
 						}
