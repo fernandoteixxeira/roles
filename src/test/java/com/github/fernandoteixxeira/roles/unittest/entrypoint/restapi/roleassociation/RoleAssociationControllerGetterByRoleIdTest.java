@@ -60,7 +60,7 @@ public class RoleAssociationControllerGetterByRoleIdTest {
         MainFixture.loadContext();
     }
 
-    @DisplayName("when_there_is_a_empty_list_of_role_associations_by_SCRUM_MASTER_then_return_200")
+    @DisplayName("When there is a empty list of role associations by SCRUM_MASTER then return 200")
     @Test
     void when_there_is_a_empty_list_of_role_associations_by_SCRUM_MASTER_then_return_200() throws Exception {
         final ListOfRoleAssociations listOfRoleAssociations = from(ListOfRoleAssociations.class).gimme(EMPTY);
@@ -72,9 +72,9 @@ public class RoleAssociationControllerGetterByRoleIdTest {
                 .andReturn();
     }
 
-    @DisplayName("When create role association having team_id is null then return 400 with error")
+    @DisplayName("When there is a non empty list of role associations by SCRUM_MASTER then return 200")
     @Test
-    void when_create_role_association_having_team_id_is_null_then_return_400_with_error() throws Exception {
+    void when_there_is_a_non_empty_list_of_role_associations_by_SCRUM_MASTER_then_return_200() throws Exception {
         final ListOfRoleAssociations listOfRoleAssociations = from(ListOfRoleAssociations.class).gimme(SCRUM_MASTER_LIST);
         doReturn(listOfRoleAssociations).when(roleAssociationGetterByRoleIdUseCase).getByRoleId(eq(SCRUM_MASTER_ID));
         val roleAssociation = listOfRoleAssociations.transform(Function.identity()).stream().toList().get(0);
@@ -90,9 +90,9 @@ public class RoleAssociationControllerGetterByRoleIdTest {
                 .andReturn();
     }
 
-    @DisplayName("When create role association having role_id is empty then return 400 with error")
+    @DisplayName("When try to get role association having role_id is empty then return 400 with error")
     @Test
-    void when_create_role_association_having_role_id_is_empty_then_return_400_with_error() throws Exception {
+    void when_try_to_get_role_association_having_role_id_is_empty_then_return_400_with_error() throws Exception {
         final RoleAssociationRequest roleAssociationRequest = from(RoleAssociationRequest.class).gimme(SCRUM_MASTER);
         val roleAssociationJsonObject = JSONObjectFromRoleAssociationRequestAdapter.of(roleAssociationRequest).adapt();
 
