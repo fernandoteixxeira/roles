@@ -1,6 +1,7 @@
 package com.github.fernandoteixxeira.roles.fixture;
 
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
+import com.github.fernandoteixxeira.roles.fixture.core.ListOfRoleAssociationsFixture;
 import com.github.fernandoteixxeira.roles.fixture.core.ListOfRolesFixture;
 import com.github.fernandoteixxeira.roles.fixture.core.RoleAssociationFixture;
 import com.github.fernandoteixxeira.roles.fixture.core.RoleFixture;
@@ -29,6 +30,7 @@ public class MainFixture implements TemplateLoader {
         RoleAssociationRequestFixture.load();
         RoleAssociationResponseFixture.load();
         ListOfRolesFixture.load();
+        ListOfRoleAssociationsFixture.load();
         RoleAssociationFixture.load();
         RoleORMFixture.load();
         RoleAssociationORMFixture.load();

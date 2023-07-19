@@ -15,11 +15,11 @@ import static lombok.AccessLevel.PRIVATE;
 @RequiredArgsConstructor(access = PRIVATE)
 public class RoleAssociationResponseFromRoleAssociationAdapter {
     private final RoleAssociation roleAssociationRequest;
-    private final List<Function<UserIdGetter, LinkResponse>> linkCreator;
+    private final List<Function<IdGetter, LinkResponse>> linkCreator;
 
     public static RoleAssociationResponseFromRoleAssociationAdapter of(
             final RoleAssociation roleAssociationRequest,
-            final List<Function<UserIdGetter, LinkResponse>> linkCreator
+            final List<Function<IdGetter, LinkResponse>> linkCreator
     ) {
         Objects.requireNonNull(roleAssociationRequest);
         return new RoleAssociationResponseFromRoleAssociationAdapter(roleAssociationRequest, linkCreator);

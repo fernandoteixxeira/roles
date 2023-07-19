@@ -1,12 +1,10 @@
 package com.github.fernandoteixxeira.roles.unittest.dataprovider.roleassociation;
 
-import com.github.fernandoteixxeira.roles.core.usecase.role.Role;
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociation;
 import com.github.fernandoteixxeira.roles.dataprovider.orm.RoleAssociationORM;
 import com.github.fernandoteixxeira.roles.dataprovider.roleassociation.RoleAssociationDataProvider;
 import com.github.fernandoteixxeira.roles.dataprovider.roleassociation.RoleAssociationRepository;
 import com.github.fernandoteixxeira.roles.fixture.core.RoleAssociationFixture;
-import com.github.fernandoteixxeira.roles.fixture.core.RoleFixture;
 import lombok.val;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +26,7 @@ import static org.mockito.Mockito.verify;
 
 @DisplayName("Unit test for data provider of RoleAssociationORM to test Saver")
 @ExtendWith(MockitoExtension.class)
-public class RoleAssociationDataProviderTest {
+public class RoleAssociationDataProviderSaverTest {
     @InjectMocks
     RoleAssociationDataProvider roleAssociationDataProvider;
     @Mock

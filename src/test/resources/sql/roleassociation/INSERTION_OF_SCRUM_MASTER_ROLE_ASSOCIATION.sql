@@ -1,0 +1,1 @@
+INSERT INTO role_user_team_association (role_id, user_id, team_id, created_at) VALUES ('PRODUCT_OWNER', 'USER_ID_PRODUCT_OWNER', 'TEAM_ID_PRODUCT_OWNER', CURRENT_TIMESTAMP);

@@ -2,6 +2,7 @@ package com.github.fernandoteixxeira.roles.unittest.entrypoint.restapi.roleassoc
 
 import com.github.fernandoteixxeira.roles.application.configuration.LanguageConfiguration;
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociation;
+import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociationGetterByRoleIdUseCase;
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociationSaverUseCase;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.handler.GlobalExceptionHandler;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.role.RoleRequest;
@@ -39,7 +40,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Unit tests for REST API in route GET /v1/roles/{role}/associations")
+@DisplayName("Unit tests for REST API in route POST /v1/roles/{role}/associations")
 @WebMvcTest
 @SpringJUnitWebConfig(classes = {RoleAssociationController.class, UserLinkResponseFactory.class, TeamLinkResponseFactory.class
         , GlobalExceptionHandler.class, LanguageConfiguration.class})
@@ -49,6 +50,8 @@ public class RoleAssociationControllerAdderTest {
     MockMvc mockMvc;
     @MockBean
     RoleAssociationSaverUseCase roleAssociationSaverUseCase;
+    @MockBean
+    RoleAssociationGetterByRoleIdUseCase roleAssociationGetterByRoleIdUseCase;
     @Captor
     ArgumentCaptor<RoleAssociation> roleAssociationCaptor;
 

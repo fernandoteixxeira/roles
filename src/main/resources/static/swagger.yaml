@@ -241,7 +241,7 @@ components:
     RespLisOfRoleAssociation:
       type: object
       properties:
-        role_associations:
+        associations:
           type: array
           items:
             $ref: '#/components/schemas/RespRoleAssociation'

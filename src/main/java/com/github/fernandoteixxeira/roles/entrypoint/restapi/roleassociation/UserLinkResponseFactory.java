@@ -19,8 +19,11 @@ public class UserLinkResponseFactory {
     @Value("${hateaos.user.uri}")
     private final String uri;
 
-    protected LinkResponse create(final UserIdGetter userGetter) {
-        val uri = MessageFormat.format(this.uri, userGetter.getUserId());
+    protected LinkResponse create(final IdGetter idGetter) {
+        if (!(idGetter instanceof UserIdGetter userIdGetter)) {
+            return null;
+        }
+        val uri = MessageFormat.format(this.uri, userIdGetter.getUserId());
         return LinkResponse.builder()
                 .type(type)
                 .rel(rel)

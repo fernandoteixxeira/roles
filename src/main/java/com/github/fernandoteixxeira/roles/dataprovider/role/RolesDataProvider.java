@@ -25,7 +25,7 @@ public class RolesDataProvider implements RolesGetter, RoleSaver {
     @Override
     public Role save(Role role) {
         val roleOrm = RoleORMFromRoleAdapter.of(role).adapt();
-        val roleSaved = roleRepository.save(roleOrm);
-        return RoleFromRoleORMAdapter.of(roleSaved).adapt();
+        val savedRole = roleRepository.save(roleOrm);
+        return RoleFromRoleORMAdapter.of(savedRole).adapt();
     }
 }

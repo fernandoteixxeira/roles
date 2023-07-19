@@ -19,8 +19,11 @@ public class TeamLinkResponseFactory {
     @Value("${hateaos.team.uri}")
     private final String uri;
 
-    protected LinkResponse create(final UserIdGetter userGetter) {
-        val uri = MessageFormat.format(this.uri, userGetter.getUserId());
+    protected LinkResponse create(final IdGetter idGetter) {
+        if (!(idGetter instanceof TeamIdGetter teamIdGetter)) {
+            return null;
+        }
+        val uri = MessageFormat.format(this.uri, teamIdGetter.getTeamId());
         return LinkResponse.builder()
                 .type(type)
                 .rel(rel)
