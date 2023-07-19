@@ -7,6 +7,7 @@ ADD pom.xml .
 # Cache dependencies in a layer
 RUN mvn dependency:go-offline
 
+ADD lombok.config .
 ADD src src
 
 RUN mvn clean install

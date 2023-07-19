@@ -11,3 +11,12 @@ springdoc:
     path: /api-docs
   swagger-ui:
     url: ./swagger.yaml
+hateaos:
+  user:
+    type: GET
+    rel: user
+    uri: ${HATEAOS_USER_URI}
+  team:
+    type: GET
+    rel: team
+    uri: ${HATEAOS_TEAM_URI}

@@ -1,6 +1,17 @@
 spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
   jpa:
     database: h2
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:roles
+hateaos:
+  user:
+    type: GET
+    rel: user
+    uri: localhost:8080/users/{0}
+  team:
+    type: GET
+    rel: team
+    uri: localhost:8080/teams/{0}

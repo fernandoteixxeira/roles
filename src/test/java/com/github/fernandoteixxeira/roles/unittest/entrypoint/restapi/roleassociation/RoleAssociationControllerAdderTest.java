@@ -7,6 +7,8 @@ import com.github.fernandoteixxeira.roles.entrypoint.restapi.handler.GlobalExcep
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.role.RoleRequest;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.roleassociation.RoleAssociationController;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.roleassociation.RoleAssociationRequest;
+import com.github.fernandoteixxeira.roles.entrypoint.restapi.roleassociation.TeamLinkResponseFactory;
+import com.github.fernandoteixxeira.roles.entrypoint.restapi.roleassociation.UserLinkResponseFactory;
 import com.github.fernandoteixxeira.roles.fixture.MainFixture;
 import com.github.fernandoteixxeira.roles.fixture.core.RoleAssociationFixture;
 import com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleRequestFixture;
@@ -39,7 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @DisplayName("Unit tests for REST API in route GET /v1/roles/{role}/associations")
 @WebMvcTest
-@SpringJUnitWebConfig(classes = {RoleAssociationController.class, GlobalExceptionHandler.class, LanguageConfiguration.class})
+@SpringJUnitWebConfig(classes = {RoleAssociationController.class, UserLinkResponseFactory.class, TeamLinkResponseFactory.class
+        , GlobalExceptionHandler.class, LanguageConfiguration.class})
 public class RoleAssociationControllerAdderTest {
 
     @Autowired
@@ -67,10 +70,12 @@ public class RoleAssociationControllerAdderTest {
                         .contentType("application/json")
                         .content(roleAssociationJsonObject.toString()))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.teamId", is(roleAssociation.getTeamId())))
-                .andExpect(jsonPath("$.userId", is(roleAssociation.getUserId())))
-                .andExpect(jsonPath("$.roleId", is(SCRUM_MASTER_ID)))
-                .andExpect(jsonPath("$.createdAt").isNotEmpty())
+                .andExpect(jsonPath("$.team_id", is(roleAssociation.getTeamId())))
+                .andExpect(jsonPath("$.user_id", is(roleAssociation.getUserId())))
+                .andExpect(jsonPath("$.role_id", is(SCRUM_MASTER_ID)))
+                .andExpect(jsonPath("$.links[0].rel", is("user")))
+                .andExpect(jsonPath("$.links[1].rel", is("team")))
+                .andExpect(jsonPath("$.created_at").isNotEmpty())
                 .andReturn();
 
         verify(roleAssociationSaverUseCase).save(roleAssociationCaptor.capture());
@@ -85,7 +90,7 @@ public class RoleAssociationControllerAdderTest {
     void when_create_role_association_having_team_id_is_null_then_return_400_with_error() throws Exception {
         final RoleAssociationRequest roleAssociationRequest = from(RoleAssociationRequest.class).gimme(SCRUM_MASTER);
         val roleAssociationJsonObject = JSONObjectFromRoleAssociationRequestAdapter.of(roleAssociationRequest).adapt();
-        roleAssociationJsonObject.put("teamId", null);
+        roleAssociationJsonObject.put("team_id", null);
 
         mockMvc.perform(post("/v1/roles/{role}/associations", SCRUM_MASTER_ID)
                         .contentType("application/json")
@@ -104,7 +109,7 @@ public class RoleAssociationControllerAdderTest {
     void when_create_role_association_having_user_id_is_null_then_return_400_with_error() throws Exception {
         final RoleAssociationRequest roleAssociationRequest = from(RoleAssociationRequest.class).gimme(SCRUM_MASTER);
         val roleAssociationJsonObject = JSONObjectFromRoleAssociationRequestAdapter.of(roleAssociationRequest).adapt();
-        roleAssociationJsonObject.put("userId", null);
+        roleAssociationJsonObject.put("user_id", null);
 
         mockMvc.perform(post("/v1/roles/{role}/associations", SCRUM_MASTER_ID)
                         .contentType("application/json")
@@ -123,7 +128,7 @@ public class RoleAssociationControllerAdderTest {
     void when_create_role_association_having_team_id_is_empty_then_return_400_with_error() throws Exception {
         final RoleAssociationRequest roleAssociationRequest = from(RoleAssociationRequest.class).gimme(SCRUM_MASTER);
         val roleAssociationJsonObject = JSONObjectFromRoleAssociationRequestAdapter.of(roleAssociationRequest).adapt();
-        roleAssociationJsonObject.put("teamId", " ");
+        roleAssociationJsonObject.put("team_id", " ");
 
         mockMvc.perform(post("/v1/roles/{role}/associations", SCRUM_MASTER_ID)
                         .contentType("application/json")
@@ -142,7 +147,7 @@ public class RoleAssociationControllerAdderTest {
     void when_create_role_association_having_user_id_is_empty_then_return_400_with_error() throws Exception {
         final RoleAssociationRequest roleAssociationRequest = from(RoleAssociationRequest.class).gimme(SCRUM_MASTER);
         val roleAssociationJsonObject = JSONObjectFromRoleAssociationRequestAdapter.of(roleAssociationRequest).adapt();
-        roleAssociationJsonObject.put("userId", " ");
+        roleAssociationJsonObject.put("user_id", " ");
 
         mockMvc.perform(post("/v1/roles/{role}/associations", SCRUM_MASTER_ID)
                         .contentType("application/json")

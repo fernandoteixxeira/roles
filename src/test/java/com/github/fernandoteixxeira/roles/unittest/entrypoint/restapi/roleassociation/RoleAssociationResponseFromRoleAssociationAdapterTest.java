@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static br.com.six2six.fixturefactory.Fixture.from;
 import static com.github.fernandoteixxeira.roles.entrypoint.restapi.roleassociation.RoleAssociationResponseFromRoleAssociationAdapter.of;
 import static com.github.fernandoteixxeira.roles.fixture.MainFixture.loadContext;
@@ -27,7 +29,7 @@ public class RoleAssociationResponseFromRoleAssociationAdapterTest {
     @Test
     public void when_RoleAssociation_object_is_non_null_then_return_adapted_RoleAssociationResponse_object() {
         final RoleAssociation roleAssociation = from(RoleAssociation.class).gimme(SCRUM_MASTER);
-        val result = of(roleAssociation).adapt();
+        val result = of(roleAssociation, List.of()).adapt();
         final RoleAssociationResponse expectedResponse = from(RoleAssociationResponse.class).gimme(RoleAssociationResponseFixture.Templates.SCRUM_MASTER);
         assertThat(result).isNotNull()
                 .extracting("teamId", "userId", "roleId")
@@ -38,6 +40,6 @@ public class RoleAssociationResponseFromRoleAssociationAdapterTest {
     @DisplayName("When RoleAssociation object is null then throw exception")
     @Test
     public void when_RoleAssociation_object_is_null_then_throw_exception() {
-        assertThrows(NullPointerException.class, () -> of(null));
+        assertThrows(NullPointerException.class, () -> of(null, List.of()));
     }
 }

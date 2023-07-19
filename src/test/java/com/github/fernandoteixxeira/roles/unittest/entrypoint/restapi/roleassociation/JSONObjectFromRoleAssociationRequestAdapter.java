@@ -14,8 +14,8 @@ public class JSONObjectFromRoleAssociationRequestAdapter {
     @SneakyThrows
     public JSONObject adapt() {
         val json = new JSONObject();
-        json.put("teamId", role.getTeamId());
-        json.put("userId", role.getUserId());
+        json.put("team_id", role.getTeamId());
+        json.put("user_id", role.getUserId());
         return json;
     }
 }

@@ -1,6 +1,7 @@
 package com.github.fernandoteixxeira.roles.entrypoint.restapi.roleassociation;
 
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociationSaverUseCase;
+import com.github.fernandoteixxeira.roles.entrypoint.restapi.hateaos.LinkResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.function.Function;
+
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RequiredArgsConstructor
@@ -23,6 +27,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class RoleAssociationController {
 
     private final RoleAssociationSaverUseCase roleAssociationSaverUseCase;
+    private final UserLinkResponseFactory userLinkResponseFactory;
+    private final TeamLinkResponseFactory teamLinkResponseFactory;
 
     @Transactional
     @PostMapping("/roles/{roleId}/associations")
@@ -33,6 +39,7 @@ public class RoleAssociationController {
     ) {
         val roleAssociation = RoleAssociationFromRoleAssociationRequestAdapter.of(roleId, roleAssociationRequest).adapt();
         val roleAssociationSaved = roleAssociationSaverUseCase.save(roleAssociation);
-        return RoleAssociationResponseFromRoleAssociationAdapter.of(roleAssociationSaved).adapt();
+        final List<Function<UserIdGetter, LinkResponse>> linksCreator = List.of(userLinkResponseFactory::create, teamLinkResponseFactory::create);
+        return RoleAssociationResponseFromRoleAssociationAdapter.of(roleAssociationSaved, linksCreator).adapt();
     }
 }

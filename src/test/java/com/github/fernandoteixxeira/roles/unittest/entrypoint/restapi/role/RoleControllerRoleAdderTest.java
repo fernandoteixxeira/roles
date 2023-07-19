@@ -68,7 +68,7 @@ public class RoleControllerRoleAdderTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(roleRequest.getId())))
                 .andExpect(jsonPath("$.description", is(roleRequest.getDescription())))
-                .andExpect(jsonPath("$.createdAt").isNotEmpty())
+                .andExpect(jsonPath("$.created_at").isNotEmpty())
                 .andReturn();
 
         verify(roleSaverUseCase).save(roleCaptor.capture());
