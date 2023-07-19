@@ -3,6 +3,7 @@ package com.github.fernandoteixxeira.roles.unittest.entrypoint.restapi.roleassoc
 import com.github.fernandoteixxeira.roles.application.configuration.LanguageConfiguration;
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociation;
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociationGetterByRoleIdUseCase;
+import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociationGetterByTeamMemberUseCase;
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociationSaverUseCase;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.handler.GlobalExceptionHandler;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.role.RoleRequest;
@@ -54,6 +55,8 @@ public class RoleAssociationControllerAdderTest {
     RoleAssociationGetterByRoleIdUseCase roleAssociationGetterByRoleIdUseCase;
     @Captor
     ArgumentCaptor<RoleAssociation> roleAssociationCaptor;
+    @MockBean
+    RoleAssociationGetterByTeamMemberUseCase roleAssociationGetterByTeamMemberUseCase;
 
     @BeforeAll
     static void setup() {

@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.tuple;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 
-@DisplayName("Integration test to find by role_id RoleAssociationORM on database")
+@DisplayName("Integration test to find by team_id and user_id RoleAssociationORM on database")
 @DataJpaTest
 public class RoleAssociationRepositoryFinderByTeamIdAndUserIdTest {
 
@@ -32,15 +32,15 @@ public class RoleAssociationRepositoryFinderByTeamIdAndUserIdTest {
         MainFixture.loadContext();
     }
 
-    @DisplayName("When find by role_id on database then return a list of RoleAssociationRM with one records")
+    @DisplayName("When find by team_id and user_id on database then return a list of RoleAssociationRM with one records")
     @Test
     @SqlGroup({
             @Sql(value = "/sql/roleassociation/INSERTION_OF_SCRUM_MASTER_ROLE_ASSOCIATION.sql", executionPhase = BEFORE_TEST_METHOD),
             @Sql(value = "/sql/roleassociation/DELETE_ALL_ROLE_ASSOCIATION.sql", executionPhase = AFTER_TEST_METHOD)
     })
-    void when_find_by_role_id_on_database_then_return_a_list_of_RoleAssociationRM_with_one_records() {
+    void when_find_by_team_id_and_user_id_on_database_then_return_a_list_of_RoleAssociationRM_with_one_records() {
         final RoleAssociationORM roleAssociationORM = Fixture.from(RoleAssociationORM.class).gimme(PRODUCT_OWNER);
-        val result = roleAssociationRepository.findByRoleId(PRODUCT_OWNER_ID);
+        val result = roleAssociationRepository.findByTeamIdAndMemberId(roleAssociationORM.getId().getTeamId(), roleAssociationORM.getId().getUserId());
         assertThat(result).isNotEmpty()
                 .hasSizeGreaterThanOrEqualTo(1)
                 .extracting("id.roleId", "id.userId", "id.teamId")

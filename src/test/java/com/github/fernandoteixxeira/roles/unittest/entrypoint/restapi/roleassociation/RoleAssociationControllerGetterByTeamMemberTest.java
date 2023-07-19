@@ -4,15 +4,20 @@ import com.github.fernandoteixxeira.roles.application.configuration.LanguageConf
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.ListOfRoleAssociations;
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociation;
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociationGetterByRoleIdUseCase;
+import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociationGetterByTeamMemberUseCase;
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociationSaverUseCase;
+import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.TeamMember;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.handler.GlobalExceptionHandler;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.roleassociation.RoleAssociationController;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.roleassociation.RoleAssociationRequest;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.roleassociation.TeamLinkResponseFactory;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.roleassociation.UserLinkResponseFactory;
 import com.github.fernandoteixxeira.roles.fixture.MainFixture;
+import com.github.fernandoteixxeira.roles.fixture.core.TeamMemberFixture;
+import com.github.fernandoteixxeira.roles.unittest.core.usecase.role.roleassociation.RoleAssociationGetterByTeamMemberUseCaseTest;
 import lombok.val;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -31,13 +36,14 @@ import static com.github.fernandoteixxeira.roles.fixture.core.ListOfRoleAssociat
 import static com.github.fernandoteixxeira.roles.fixture.core.RoleFixture.Values.SCRUM_MASTER_ID;
 import static com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleAssociationRequestFixture.Templates.SCRUM_MASTER;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Unit tests for REST API in route GET /v1/roles/{role}/associations")
+@DisplayName("Unit tests for REST API in route GET /v1/teams/{team_id}/users/{user_id}/roles/associations")
 @WebMvcTest
 @SpringJUnitWebConfig(classes = {RoleAssociationController.class, UserLinkResponseFactory.class, TeamLinkResponseFactory.class
         , GlobalExceptionHandler.class, LanguageConfiguration.class})
@@ -49,8 +55,8 @@ public class RoleAssociationControllerGetterByTeamMemberTest {
     RoleAssociationSaverUseCase roleAssociationSaverUseCase;
     @MockBean
     RoleAssociationGetterByRoleIdUseCase roleAssociationGetterByRoleIdUseCase;
-    @Captor
-    ArgumentCaptor<RoleAssociation> roleAssociationCaptor;
+    @MockBean
+    RoleAssociationGetterByTeamMemberUseCase roleAssociationGetterByTeamMemberUseCase;
 
     @BeforeAll
     static void setup() {
@@ -61,9 +67,10 @@ public class RoleAssociationControllerGetterByTeamMemberTest {
     @Test
     void when_there_is_a_empty_list_of_role_associations_by_SCRUM_MASTER_then_return_200() throws Exception {
         final ListOfRoleAssociations listOfRoleAssociations = from(ListOfRoleAssociations.class).gimme(EMPTY);
-        doReturn(listOfRoleAssociations).when(roleAssociationGetterByRoleIdUseCase).getByRoleId(eq(SCRUM_MASTER_ID));
+        doReturn(listOfRoleAssociations).when(roleAssociationGetterByTeamMemberUseCase).getByTeamMember(any(TeamMember.class));
+        final TeamMember teamMember = from(TeamMember.class).gimme(TeamMemberFixture.Templates.SCRUM_MASTER);
 
-        mockMvc.perform(get("/v1/roles/{role}/associations", SCRUM_MASTER_ID))
+        mockMvc.perform(get("/v1/teams/{team_id}/users/{user_id}/roles/associations", teamMember.getTeamId(), teamMember.getUserId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.associations").isEmpty())
                 .andReturn();
@@ -73,10 +80,11 @@ public class RoleAssociationControllerGetterByTeamMemberTest {
     @Test
     void when_there_is_a_non_empty_list_of_role_associations_by_SCRUM_MASTER_then_return_200() throws Exception {
         final ListOfRoleAssociations listOfRoleAssociations = from(ListOfRoleAssociations.class).gimme(SCRUM_MASTER_LIST);
-        doReturn(listOfRoleAssociations).when(roleAssociationGetterByRoleIdUseCase).getByRoleId(eq(SCRUM_MASTER_ID));
+        doReturn(listOfRoleAssociations).when(roleAssociationGetterByTeamMemberUseCase).getByTeamMember(any(TeamMember.class));
         val roleAssociation = listOfRoleAssociations.transform(Function.identity()).stream().toList().get(0);
+        final TeamMember teamMember = from(TeamMember.class).gimme(TeamMemberFixture.Templates.SCRUM_MASTER);
 
-        mockMvc.perform(get("/v1/roles/{role}/associations", SCRUM_MASTER_ID))
+        mockMvc.perform(get("/v1/teams/{team_id}/users/{user_id}/roles/associations", teamMember.getTeamId(), teamMember.getUserId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.associations[0].team_id", is(roleAssociation.getTeamId())))
                 .andExpect(jsonPath("$.associations[0].user_id", is(roleAssociation.getUserId())))
@@ -87,19 +95,31 @@ public class RoleAssociationControllerGetterByTeamMemberTest {
                 .andReturn();
     }
 
-    @DisplayName("When try to get role association having role_id is empty then return 400 with error")
+    @DisplayName("When try to get role association having team_id is empty then return 400 with error")
     @Test
-    void when_try_to_get_role_association_having_role_id_is_empty_then_return_400_with_error() throws Exception {
-        final RoleAssociationRequest roleAssociationRequest = from(RoleAssociationRequest.class).gimme(SCRUM_MASTER);
-        val roleAssociationJsonObject = JSONObjectFromRoleAssociationRequestAdapter.of(roleAssociationRequest).adapt();
+    void when_try_to_get_role_association_having_team_id_is_empty_then_return_400_with_error() throws Exception {
+        final TeamMember teamMember = from(TeamMember.class).gimme(TeamMemberFixture.Templates.SCRUM_MASTER);
 
-        mockMvc.perform(get("/v1/roles/{roleId}/associations", " ")
-                        .contentType("application/json")
-                        .content(roleAssociationJsonObject.toString()))
+        mockMvc.perform(get("/v1/teams/{team_id}/users/{user_id}/roles/associations", " ", teamMember.getUserId()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", is("some fields contain errors")))
                 .andExpect(jsonPath("$.errors[0].scope", is("path")))
-                .andExpect(jsonPath("$.errors[0].field", is("getRoleAssociationsByRoleId.roleId")))
+                .andExpect(jsonPath("$.errors[0].field", is("getRoleAssociationsByTeamMember.teamId")))
+                .andExpect(jsonPath("$.errors[0].value", is(" ")))
+                .andExpect(jsonPath("$.errors[0].message", is("must not be blank")))
+                .andReturn();
+    }
+
+    @DisplayName("When try to get role association having user_id is empty then return 400 with error")
+    @Test
+    void when_try_to_get_role_association_having_user_id_is_empty_then_return_400_with_error() throws Exception {
+        final TeamMember teamMember = from(TeamMember.class).gimme(TeamMemberFixture.Templates.SCRUM_MASTER);
+
+        mockMvc.perform(get("/v1/teams/{team_id}/users/{user_id}/roles/associations", teamMember.getTeamId(), " "))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("some fields contain errors")))
+                .andExpect(jsonPath("$.errors[0].scope", is("path")))
+                .andExpect(jsonPath("$.errors[0].field", is("getRoleAssociationsByTeamMember.userId")))
                 .andExpect(jsonPath("$.errors[0].value", is(" ")))
                 .andExpect(jsonPath("$.errors[0].message", is("must not be blank")))
                 .andReturn();

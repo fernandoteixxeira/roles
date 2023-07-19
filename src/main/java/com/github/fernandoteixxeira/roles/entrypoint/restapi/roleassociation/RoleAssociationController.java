@@ -1,7 +1,9 @@
 package com.github.fernandoteixxeira.roles.entrypoint.restapi.roleassociation;
 
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociationGetterByRoleIdUseCase;
+import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociationGetterByTeamMemberUseCase;
 import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.RoleAssociationSaverUseCase;
+import com.github.fernandoteixxeira.roles.core.usecase.roleassociation.TeamMember;
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.hateaos.LinkResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -29,16 +31,19 @@ public class RoleAssociationController {
 
     private final RoleAssociationSaverUseCase roleAssociationSaverUseCase;
     private final RoleAssociationGetterByRoleIdUseCase roleAssociationGetterByRoleIdUseCase;
+    private final RoleAssociationGetterByTeamMemberUseCase roleAssociationGetterByTeamMemberUseCase;
     private final List<Function<IdGetter, LinkResponse>> linksCreator;
 
     public RoleAssociationController(
             final RoleAssociationSaverUseCase roleAssociationSaverUseCase,
             final RoleAssociationGetterByRoleIdUseCase roleAssociationGetterUseCase,
+            final RoleAssociationGetterByTeamMemberUseCase roleAssociationGetterByTeamMemberUseCase,
             final UserLinkResponseFactory userLinkResponseFactory,
             final TeamLinkResponseFactory teamLinkResponseFactory
     ) {
         this.roleAssociationSaverUseCase = roleAssociationSaverUseCase;
         this.roleAssociationGetterByRoleIdUseCase = roleAssociationGetterUseCase;
+        this.roleAssociationGetterByTeamMemberUseCase = roleAssociationGetterByTeamMemberUseCase;
         this.linksCreator = List.of(userLinkResponseFactory::create, teamLinkResponseFactory::create);
     }
 
@@ -59,6 +64,24 @@ public class RoleAssociationController {
     @ResponseStatus(OK)
     public ListOfRoleAssociationResponse getRoleAssociationsByRoleId(@NotBlank @PathVariable final String roleId) {
         val listOfRoleAssociations = roleAssociationGetterByRoleIdUseCase.getByRoleId(roleId);
+        val roleAssociations = listOfRoleAssociations
+                .transform(roleAssociation -> RoleAssociationResponseFromRoleAssociationAdapter.of(roleAssociation, linksCreator).adapt());
+        return ListOfRoleAssociationResponse.builder()
+                .associations(roleAssociations)
+                .build();
+    }
+    @Transactional
+    @GetMapping("/teams/{teamId}/users/{userId}/roles/associations")
+    @ResponseStatus(OK)
+    public ListOfRoleAssociationResponse getRoleAssociationsByTeamMember(
+            @NotBlank @PathVariable final String teamId,
+            @NotBlank @PathVariable final String userId
+    ) {
+        val teamMember = TeamMember.builder()
+                .teamId(teamId)
+                .userId(userId)
+                .build();
+        val listOfRoleAssociations = roleAssociationGetterByTeamMemberUseCase.getByTeamMember(teamMember);
         val roleAssociations = listOfRoleAssociations
                 .transform(roleAssociation -> RoleAssociationResponseFromRoleAssociationAdapter.of(roleAssociation, linksCreator).adapt());
         return ListOfRoleAssociationResponse.builder()

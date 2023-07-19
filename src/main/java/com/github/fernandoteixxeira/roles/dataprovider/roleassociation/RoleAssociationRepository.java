@@ -11,5 +11,8 @@ import java.util.stream.Stream;
 
 public interface RoleAssociationRepository extends JpaRepository<RoleAssociationORM, RoleAssociationIdORM> {
     @Query("SELECT ra FROM RoleAssociationORM ra WHERE ra.id.roleId = ?1")
-    List<RoleAssociationORM> findByRoleId(final String roleId);
+    List<RoleAssociationORM> findByRoleId(String roleId);
+
+    @Query("SELECT ra FROM RoleAssociationORM ra WHERE ra.id.teamId = ?1 AND ra.id.userId = ?2")
+    List<RoleAssociationORM> findByTeamIdAndMemberId(String teamId, String userId);
 }

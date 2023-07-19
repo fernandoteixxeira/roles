@@ -37,7 +37,7 @@ public class RoleAssociationDataProviderGetterByRoleIdTest {
 
     @DisplayName("When there is one records of RoleAssociation where role_id is SCRUM_MASTER then return a list with it")
     @Test
-    void when_there_is_two_records_of_one_records_of_RoleAssociation_where_role_id_is_SCRUM_MASTER_then_return_a_list_with_id() {
+    void when_there_is_one_records_of_RoleAssociation_where_role_id_is_SCRUM_MASTER_then_return_a_list_with_id() {
         val roleAssociationORM = from(RoleAssociationORM.class).gimme(SCRUM_MASTER);
         doReturn(List.of(roleAssociationORM)).when(roleAssociationRepository).findByRoleId(eq(SCRUM_MASTER_ID));
         val result = roleAssociationDataProvider.getByRoleId(SCRUM_MASTER_ID);

@@ -6,8 +6,8 @@ import lombok.val;
 
 @Named
 @RequiredArgsConstructor
-public class RoleAssociationGetterByRoleTeamMemberUseCase {
-    private final RoleAssociationGetterTeamMember roleAssociationGetterByTeamMember;
+public class RoleAssociationGetterByTeamMemberUseCase {
+    private final RoleAssociationGetterByTeamMember roleAssociationGetterByTeamMember;
     public ListOfRoleAssociations getByTeamMember(final TeamMember teamMember) {
         val roleAssociations = roleAssociationGetterByTeamMember.getByTeamMember(teamMember);
         return ListOfRoleAssociations.builder()
