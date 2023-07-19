@@ -15,6 +15,7 @@ import com.github.fernandoteixxeira.roles.fixture.MainFixture;
 import com.github.fernandoteixxeira.roles.fixture.core.RoleAssociationFixture;
 import com.github.fernandoteixxeira.roles.fixture.entrypoint.RoleRequestFixture;
 import com.github.fernandoteixxeira.roles.unittest.entrypoint.restapi.role.JSONObjectFromRoleRequestAdapter;
+import com.github.javafaker.Faker;
 import lombok.val;
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
@@ -182,6 +183,42 @@ public class RoleAssociationControllerAdderTest {
                 .andExpect(jsonPath("$.errors[0].field", is("addRoleAssociationsByRoleId.roleId")))
                 .andExpect(jsonPath("$.errors[0].value", is(" ")))
                 .andExpect(jsonPath("$.errors[0].message", is("must not be blank")))
+                .andReturn();
+    }
+
+    @DisplayName("When create role association having user_id greater than 50 chars then return 400 with error")
+    @Test
+    void when_create_role_association_having_user_id_greater_than_50_chars_then_return_400_with_error() throws Exception {
+        final RoleAssociationRequest roleAssociationRequest = from(RoleAssociationRequest.class).gimme(SCRUM_MASTER);
+        val roleAssociationJsonObject = JSONObjectFromRoleAssociationRequestAdapter.of(roleAssociationRequest).adapt();
+        roleAssociationJsonObject.put("user_id", Faker.instance().lorem().characters(51, 100));
+
+        mockMvc.perform(post("/v1/roles/{roleId}/associations", " ")
+                        .contentType("application/json")
+                        .content(roleAssociationJsonObject.toString()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("some fields contain errors")))
+                .andExpect(jsonPath("$.errors[0].scope", is("attribute")))
+                .andExpect(jsonPath("$.errors[0].field", is("userId")))
+                .andExpect(jsonPath("$.errors[0].message", is("size must be between 0 and 50")))
+                .andReturn();
+    }
+
+    @DisplayName("When create role association having team_id greater than 50 chars then return 400 with error")
+    @Test
+    void when_create_role_association_having_team_id_greater_than_50_chars_then_return_400_with_error() throws Exception {
+        final RoleAssociationRequest roleAssociationRequest = from(RoleAssociationRequest.class).gimme(SCRUM_MASTER);
+        val roleAssociationJsonObject = JSONObjectFromRoleAssociationRequestAdapter.of(roleAssociationRequest).adapt();
+        roleAssociationJsonObject.put("team_id", Faker.instance().lorem().characters(51, 100));
+
+        mockMvc.perform(post("/v1/roles/{roleId}/associations", " ")
+                        .contentType("application/json")
+                        .content(roleAssociationJsonObject.toString()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("some fields contain errors")))
+                .andExpect(jsonPath("$.errors[0].scope", is("attribute")))
+                .andExpect(jsonPath("$.errors[0].field", is("teamId")))
+                .andExpect(jsonPath("$.errors[0].message", is("size must be between 0 and 50")))
                 .andReturn();
     }
 }
