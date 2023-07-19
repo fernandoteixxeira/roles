@@ -210,7 +210,7 @@ components:
       type: object
       properties:
         team_id:
-          type: integer
+          type: string
           maxLength: 50
           example: 7676a4bf-adfe-415c-941b-1739af07039b
         user_id:

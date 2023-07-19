@@ -1,4 +1,4 @@
-package com.github.fernandoteixxeira.roles.unittest.entrypoint.restapi;
+package com.github.fernandoteixxeira.roles.unittest.entrypoint.restapi.role;
 
 import com.github.fernandoteixxeira.roles.entrypoint.restapi.role.RoleRequest;
 import lombok.RequiredArgsConstructor;

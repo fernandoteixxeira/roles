@@ -6,7 +6,9 @@ import org.springframework.validation.ObjectError;
 
 import java.util.Objects;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+import static lombok.AccessLevel.PRIVATE;
+
+@RequiredArgsConstructor(access = PRIVATE)
 public class ErrorFromObjectErrorAdapter {
     private final ObjectError objectError;
 

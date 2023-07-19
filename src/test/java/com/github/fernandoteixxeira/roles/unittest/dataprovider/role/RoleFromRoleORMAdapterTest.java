@@ -24,7 +24,7 @@ public class RoleFromRoleORMAdapterTest {
 
     @DisplayName("When Role object is non null then return adapted RoleORM object")
     @Test
-    public void when_Role_object_is_non_null_then_return_adapted_RoleResponse_object() {
+    public void when_Role_object_is_non_null_then_return_adapted_RoleORM_object() {
         final RoleORM role = from(RoleORM.class).gimme(SCRUM_MASTER);
         val result = of(role).adapt();
         final Role expectedResponse = from(Role.class).gimme(RoleFixture.Templates.SCRUM_MASTER);

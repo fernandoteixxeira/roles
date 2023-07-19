@@ -8,7 +8,9 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import java.text.MessageFormat;
 import java.util.Objects;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+import static lombok.AccessLevel.PRIVATE;
+
+@RequiredArgsConstructor(access = PRIVATE)
 public class ErrorFromMissingServletRequestParameterExceptionAdapter {
     private final MissingServletRequestParameterException requestParameterException;
 

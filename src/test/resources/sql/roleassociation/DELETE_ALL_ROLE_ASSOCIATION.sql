@@ -1,0 +1,2 @@
+DELETE
+FROM role_user_team_association;

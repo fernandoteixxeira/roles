@@ -1,4 +1,4 @@
-package com.github.fernandoteixxeira.roles.unittest.entrypoint.restapi;
+package com.github.fernandoteixxeira.roles.unittest.entrypoint.restapi.role;
 
 
 import com.github.fernandoteixxeira.roles.application.configuration.LanguageConfiguration;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Unit tests for REST API in route GET /role")
+@DisplayName("Unit tests for REST API in route GET /v1/role")
 @WebMvcTest
 @SpringJUnitWebConfig(classes = {RoleController.class, GlobalExceptionHandler.class, LanguageConfiguration.class})
 public class RoleControllerRolesGetterTest {

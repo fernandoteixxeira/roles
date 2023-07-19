@@ -33,10 +33,10 @@ public class RoleRepositorySaverTest {
         loadContext();
     }
 
-    @DisplayName("When find all on database then return a list of RoleORM with three or more records")
+    @DisplayName("When request to save on database then save and return RoleORM records")
     @Test
     @Sql(value = "/sql/role/DELETE_ROLE_ID_SCRUM_MASTER.sql", executionPhase = AFTER_TEST_METHOD)
-    void when_find_all_on_database_then_return_a_list_of_RoleORM_with_three_or_more_records() {
+    void when_request_to_save_on_database_then_save_and_return_RoleORM_records() {
         final RoleORM role = from(RoleORM.class).gimme(SCRUM_MASTER);
 
         val result = roleRepository.save(role);

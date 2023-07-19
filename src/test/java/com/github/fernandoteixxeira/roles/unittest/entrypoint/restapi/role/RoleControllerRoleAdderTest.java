@@ -1,4 +1,4 @@
-package com.github.fernandoteixxeira.roles.unittest.entrypoint.restapi;
+package com.github.fernandoteixxeira.roles.unittest.entrypoint.restapi.role;
 
 
 import com.github.fernandoteixxeira.roles.application.configuration.LanguageConfiguration;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("Unit tests for REST API in route POST /role")
+@DisplayName("Unit tests for REST API in route POST /v1/role")
 @WebMvcTest
 @SpringJUnitWebConfig(classes = {RoleController.class, GlobalExceptionHandler.class, LanguageConfiguration.class})
 public class RoleControllerRoleAdderTest {
@@ -44,7 +44,7 @@ public class RoleControllerRoleAdderTest {
     @MockBean
     RolesGetterUseCase rolesGetterUseCase;
     @MockBean
-    RolesSaverUseCase rolesSaverUseCase;
+    RolesSaverUseCase roleSaverUseCase;
     @Captor
     ArgumentCaptor<Role> roleCaptor;
 
@@ -60,7 +60,7 @@ public class RoleControllerRoleAdderTest {
         val roleJsonObject = JSONObjectFromRoleRequestAdapter.of(roleRequest).adapt();
 
         final Role role = from(Role.class).gimme(RoleFixture.Templates.SCRUM_MASTER);
-        doReturn(role).when(rolesSaverUseCase).save(any(Role.class));
+        doReturn(role).when(roleSaverUseCase).save(any(Role.class));
 
         mockMvc.perform(post("/v1/roles")
                         .contentType("application/json")
@@ -71,7 +71,7 @@ public class RoleControllerRoleAdderTest {
                 .andExpect(jsonPath("$.createdAt").isNotEmpty())
                 .andReturn();
 
-        verify(rolesSaverUseCase).save(roleCaptor.capture());
+        verify(roleSaverUseCase).save(roleCaptor.capture());
         assertThat(roleCaptor.getValue())
                 .extracting("id", "description")
                 .doesNotContainNull()
@@ -93,7 +93,7 @@ public class RoleControllerRoleAdderTest {
                 .andExpect(jsonPath("$.errors[0].scope", is("attribute")))
                 .andExpect(jsonPath("$.errors[0].field", is("id")))
                 .andExpect(jsonPath("$.errors[0].value", is("null")))
-                .andExpect(jsonPath("$.errors[0].message", is("must not be empty")))
+                .andExpect(jsonPath("$.errors[0].message", is("must not be blank")))
                 .andReturn();
     }
 
@@ -112,7 +112,7 @@ public class RoleControllerRoleAdderTest {
                 .andExpect(jsonPath("$.errors[0].scope", is("attribute")))
                 .andExpect(jsonPath("$.errors[0].field", is("description")))
                 .andExpect(jsonPath("$.errors[0].value", is("null")))
-                .andExpect(jsonPath("$.errors[0].message", is("must not be empty")))
+                .andExpect(jsonPath("$.errors[0].message", is("must not be blank")))
                 .andReturn();
     }
 
@@ -121,7 +121,7 @@ public class RoleControllerRoleAdderTest {
     void when_create_role_having_id_is_empty_then_return_400_with_error() throws Exception {
         final RoleRequest roleRequest = from(RoleRequest.class).gimme(SCRUM_MASTER);
         val roleJsonObject = JSONObjectFromRoleRequestAdapter.of(roleRequest).adapt();
-        roleJsonObject.put("id", "");
+        roleJsonObject.put("id", " ");
 
         mockMvc.perform(post("/v1/roles")
                         .contentType("application/json")
@@ -130,8 +130,8 @@ public class RoleControllerRoleAdderTest {
                 .andExpect(jsonPath("$.message", is("some fields contain errors")))
                 .andExpect(jsonPath("$.errors[0].scope", is("attribute")))
                 .andExpect(jsonPath("$.errors[0].field", is("id")))
-                .andExpect(jsonPath("$.errors[0].value", is("")))
-                .andExpect(jsonPath("$.errors[0].message", is("must not be empty")))
+                .andExpect(jsonPath("$.errors[0].value", is(" ")))
+                .andExpect(jsonPath("$.errors[0].message", is("must not be blank")))
                 .andReturn();
     }
 
@@ -140,7 +140,7 @@ public class RoleControllerRoleAdderTest {
     void when_create_role_having_description_is_empty_then_return_400_with_error() throws Exception {
         final RoleRequest roleRequest = from(RoleRequest.class).gimme(SCRUM_MASTER);
         val roleJsonObject = JSONObjectFromRoleRequestAdapter.of(roleRequest).adapt();
-        roleJsonObject.put("description", "");
+        roleJsonObject.put("description", " ");
 
         mockMvc.perform(post("/v1/roles")
                         .contentType("application/json")
@@ -149,8 +149,8 @@ public class RoleControllerRoleAdderTest {
                 .andExpect(jsonPath("$.message", is("some fields contain errors")))
                 .andExpect(jsonPath("$.errors[0].scope", is("attribute")))
                 .andExpect(jsonPath("$.errors[0].field", is("description")))
-                .andExpect(jsonPath("$.errors[0].value", is("")))
-                .andExpect(jsonPath("$.errors[0].message", is("must not be empty")))
+                .andExpect(jsonPath("$.errors[0].value", is(" ")))
+                .andExpect(jsonPath("$.errors[0].message", is("must not be blank")))
                 .andReturn();
     }
 
